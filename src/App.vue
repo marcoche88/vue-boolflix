@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <header>
-      <Search @search="searchResults" />
+      <Search @searchMovies="searchResultsMovies" @searchTV="searchResultsTV" />
     </header>
     <main>
-      <Contents :searchRes="searchRes" />
+      <Contents :searchTot="searchTot" />
     </main>
   </div>
 </template>
@@ -21,12 +21,21 @@ export default {
   },
   data() {
     return {
-      searchRes: [],
+      searchResMovies: [],
+      searchResTV: [],
     };
   },
+  computed: {
+    searchTot() {
+      return [...this.searchResMovies, ...this.searchResTV];
+    },
+  },
   methods: {
-    searchResults(arr) {
-      this.searchRes = arr;
+    searchResultsMovies(arr) {
+      this.searchResMovies = arr;
+    },
+    searchResultsTV(arr) {
+      this.searchResTV = arr;
     },
   },
 };

@@ -1,11 +1,12 @@
 <template>
   <section class="contents">
     <ol>
-      <li v-for="result in searchRes" :key="result.id">
+      <li v-for="result in searchTot" :key="result.id">
         <ul>
-          <li><strong>Titolo:</strong> {{ result.title }}</li>
+          <li><strong>Titolo:</strong> {{ result.title || result.name }}</li>
           <li>
-            <strong>Titolo originale:</strong> {{ result.original_title }}
+            <strong>Titolo originale:</strong>
+            {{ result.original_title || result.original_name }}
           </li>
           <li>
             <strong>Lingua originale: </strong>
@@ -26,12 +27,17 @@
 <script>
 export default {
   name: "Contents",
+  data() {
+    return {
+      flags: ["it", "en"],
+    };
+  },
   props: {
-    searchRes: Array,
+    searchTot: Array,
   },
   methods: {
     flagImg(language) {
-      return language === "it" || language === "en";
+      return this.flags.includes(language);
     },
   },
 };
