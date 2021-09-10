@@ -30,7 +30,11 @@
         />
         <span class="no-flag" v-else>{{ cardItem.original_language }}</span>
       </li>
-      <li><strong>Voto:</strong> {{ cardItem.vote_average }}</li>
+      <li>
+        <strong>Voto:</strong>
+        <i v-for="num in newVote" :key="10 + num" class="fas fa-star"></i>
+        <i v-for="num in 5 - newVote" :key="num" class="far fa-star"></i>
+      </li>
     </ul>
   </li>
 </template>
@@ -46,6 +50,11 @@ export default {
   },
   props: {
     cardItem: Object,
+  },
+  computed: {
+    newVote() {
+      return Math.ceil(this.cardItem.vote_average / 2);
+    },
   },
   methods: {
     flagImg(language) {
