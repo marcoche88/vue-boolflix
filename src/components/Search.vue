@@ -1,6 +1,6 @@
 <template>
   <div class="search-bar">
-    <input type="text" v-model="searchText" @keyup.enter="search" />
+    <input type="text" v-model.trim="searchText" @keyup.enter="search" />
     <button type="button" @click="search">Cerca</button>
   </div>
 </template>
@@ -21,6 +21,7 @@ export default {
   },
   methods: {
     search() {
+      if (!this.searchText) return;
       axios
         .get(
           `https://api.themoviedb.org/3/search/movie?api_key=${this.key}&query=${this.searchText}&language=${this.lang}`
