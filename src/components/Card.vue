@@ -1,6 +1,20 @@
 <template>
   <li class="card">
     <ul>
+      <li>
+        <img
+          class="poster"
+          v-if="cardItem.poster_path"
+          :src="uriPoster + cardItem.poster_path"
+          :alt="cardItem.title || cardItem.name"
+        />
+        <img
+          class="poster"
+          v-else
+          src="../assets/img/poster-placeholder.png"
+          alt="no poster"
+        />
+      </li>
       <li><strong>Titolo:</strong> {{ cardItem.title || cardItem.name }}</li>
       <li>
         <strong>Titolo originale:</strong>
@@ -12,8 +26,9 @@
           v-if="flagImg(cardItem.original_language)"
           :src="require(`../assets/img/${cardItem.original_language}.png`)"
           :alt="cardItem.original_language"
+          class="flag"
         />
-        <span v-else>{{ cardItem.original_language }}</span>
+        <span class="no-flag" v-else>{{ cardItem.original_language }}</span>
       </li>
       <li><strong>Voto:</strong> {{ cardItem.vote_average }}</li>
     </ul>
@@ -26,6 +41,7 @@ export default {
   data() {
     return {
       flags: ["it", "en"],
+      uriPoster: "https://image.tmdb.org/t/p/w342",
     };
   },
   props: {
@@ -41,10 +57,22 @@ export default {
 
 <style scoped lang="scss">
 .card {
-  margin: 10px 0;
+  margin: 40px 0;
 }
 
-img {
+ul li {
+  list-style-type: none;
+}
+
+img.poster {
+  width: 100px;
+}
+
+img.flag {
   width: 20px;
+}
+
+.no-flag {
+  text-transform: uppercase;
 }
 </style>
