@@ -1,11 +1,34 @@
 <template>
-  <div id="app"></div>
+  <div id="app">
+    <header>
+      <Search @search="searchResults" />
+    </header>
+    <main>
+      <Contents :searchRes="searchRes" />
+    </main>
+  </div>
 </template>
 
 <script>
+import Search from "./components/Search.vue";
+import Contents from "./components/Contents.vue";
+
 export default {
   name: "App",
-  components: {},
+  components: {
+    Search,
+    Contents,
+  },
+  data() {
+    return {
+      searchRes: [],
+    };
+  },
+  methods: {
+    searchResults(arr) {
+      this.searchRes = arr;
+    },
+  },
 };
 </script>
 
