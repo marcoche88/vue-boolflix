@@ -36,8 +36,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "../scss/_vars.scss";
+
 input {
-  background-color: #202020;
-  border-color: rgb(144, 144, 144);
+  background-color: $secondary-bg-color;
+  border-color: $border-color;
 }
 </style>

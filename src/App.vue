@@ -2,7 +2,7 @@
   <div id="app">
     <header>
       <div class="logo text-center text-uppercase p-2">
-        <h1>Boolflix</h1>
+        <h1 class="text-red">Boolflix</h1>
       </div>
       <Search
         @search="search"
@@ -75,15 +75,4 @@ export default {
 
 <style lang="scss">
 @import "./scss/style.scss";
-
-body {
-  background-color: #202020;
-}
-
-header {
-  background-color: black;
-  h1 {
-    color: red;
-  }
-}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="card-body">
-    <ul class="p-0">
+    <ul class="p-0 text-white">
       <li><strong>Titolo:</strong> {{ cardItem.title || cardItem.name }}</li>
       <li>
         <strong>Titolo originale:</strong>
@@ -28,7 +28,7 @@
         <i
           v-for="(num, index) in newVote"
           :key="num + '-' + index"
-          class="fas fa-star"
+          class="fas fa-star text-red"
         ></i>
         <i v-for="num in 5 - newVote" :key="num" class="far fa-star"></i>
       </li>
@@ -61,33 +61,30 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "../scss/_vars.scss";
+
 .card-body {
   display: none;
   overflow-y: auto;
   ul {
     font-size: 14px;
-    color: white;
     list-style-type: none;
     li {
       margin: 10px 0;
     }
     strong {
-      color: red;
+      color: $primary-title-color;
     }
   }
 }
 
 .card:hover .card-body {
   display: block;
-  background-color: rgba(#202020, 0.7);
+  background-color: rgba($secondary-bg-color, 0.7);
 }
 
 img.flag {
   width: 25px;
   vertical-align: middle;
-}
-
-i.fas {
-  color: red;
 }
 </style>
