@@ -1,53 +1,43 @@
 <template>
   <div class="search-bar">
-    <input type="text" v-model.trim="searchText" @keyup.enter="search" />
-    <button type="button" @click="search">Cerca</button>
+    <div class="input-group mb-3 w-50 m-auto">
+      <input
+        type="text"
+        class="form-control"
+        :placeholder="placeholder"
+        v-model.trim="searchText"
+        @keyup.enter="search"
+      />
+      <button class="btn btn-outline-danger" type="button" @click="search">
+        Cerca
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "Search",
   data() {
     return {
       searchText: "",
-      searchResMovies: [],
-      searchResTV: [],
-      key: "f7a805106989177ca0d6da798b3fd1eb",
-      lang: "it-IT",
     };
+  },
+  props: {
+    placeholder: String,
   },
   methods: {
     search() {
-      if (!this.searchText) return;
-      axios
-        .get(
-          `https://api.themoviedb.org/3/search/movie?api_key=${this.key}&query=${this.searchText}&language=${this.lang}`
-        )
-        .then((res) => {
-          this.searchResMovies = res.data.results;
-          this.$emit("searchMovies", this.searchResMovies);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      axios
-        .get(
-          `https://api.themoviedb.org/3/search/tv?api_key=${this.key}&query=${this.searchText}&language=${this.lang}`
-        )
-        .then((res) => {
-          this.searchResTV = res.data.results;
-          this.$emit("searchTV", this.searchResTV);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.$emit("search", this.searchText);
+      this.searchText = "";
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
+input {
+  background-color: #202020;
+  border-color: rgb(144, 144, 144);
+}
 </style>

@@ -1,42 +1,56 @@
 <template>
-  <li class="card">
-    <ul>
-      <li>
-        <img
-          class="poster"
-          v-if="cardItem.poster_path"
-          :src="uriPoster + cardItem.poster_path"
-          :alt="cardItem.title || cardItem.name"
-        />
-        <img
-          class="poster"
-          v-else
-          src="../assets/img/poster-placeholder.png"
-          alt="no poster"
-        />
-      </li>
-      <li><strong>Titolo:</strong> {{ cardItem.title || cardItem.name }}</li>
-      <li>
-        <strong>Titolo originale:</strong>
-        {{ cardItem.original_title || cardItem.original_name }}
-      </li>
-      <li>
-        <strong>Lingua originale: </strong>
-        <img
-          v-if="flagImg(cardItem.original_language)"
-          :src="require(`../assets/img/${cardItem.original_language}.png`)"
-          :alt="cardItem.original_language"
-          class="flag"
-        />
-        <span class="no-flag" v-else>{{ cardItem.original_language }}</span>
-      </li>
-      <li>
-        <strong>Voto:</strong>
-        <i v-for="num in newVote" :key="10 + num" class="fas fa-star"></i>
-        <i v-for="num in 5 - newVote" :key="num" class="far fa-star"></i>
-      </li>
-    </ul>
-  </li>
+  <div class="card position-relative mx-3">
+    <img
+      class="poster card-img-top position-absolute"
+      v-if="cardItem.poster_path"
+      :src="uriPoster + cardItem.poster_path"
+      :alt="cardItem.title || cardItem.name"
+    />
+    <img
+      class="poster card-img-top position-absolute"
+      v-else
+      src="../assets/img/poster-placeholder.png"
+      alt="no poster"
+    />
+    <div class="card-body">
+      <ul class="p-0">
+        <li><strong>Titolo:</strong> {{ cardItem.title || cardItem.name }}</li>
+        <li>
+          <strong>Titolo originale:</strong>
+          {{ cardItem.original_title || cardItem.original_name }}
+        </li>
+        <li>
+          <strong>Lingua originale: </strong>
+          <img
+            v-if="flagImg(cardItem.original_language)"
+            :src="require(`../assets/img/${cardItem.original_language}.png`)"
+            :alt="cardItem.original_language"
+            class="flag"
+          />
+          <span class="text-uppercase" v-else>{{
+            cardItem.original_language
+          }}</span>
+        </li>
+        <li>
+          <strong>Descrizione: </strong>
+          <span>{{ cardItem.overview }}</span>
+        </li>
+        <li>
+          <strong>Voto:</strong>
+          <i
+            v-for="(num, index) in newVote"
+            :key="num + '-' + index"
+            class="fas fa-star red-star"
+          ></i>
+          <i
+            v-for="num in 5 - newVote"
+            :key="num"
+            class="fas fa-star white-star"
+          ></i>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -66,22 +80,35 @@ export default {
 
 <style scoped lang="scss">
 .card {
-  margin: 40px 0;
+  border: none;
+  background-color: transparent;
 }
 
-ul li {
-  list-style-type: none;
+.poster {
+  z-index: -1;
 }
 
-img.poster {
-  width: 100px;
+.card-body {
+  overflow-y: auto;
+  ul {
+    color: white;
+    list-style-type: none;
+    strong {
+      color: red;
+    }
+  }
 }
 
 img.flag {
-  width: 20px;
+  width: 25px;
+  vertical-align: middle;
 }
 
-.no-flag {
-  text-transform: uppercase;
+.red-star {
+  color: red;
+}
+
+.white-star {
+  color: white;
 }
 </style>
