@@ -10,8 +10,9 @@
         class="pb-3"
       />
     </header>
-    <main>
-      <Contents :searchTot="searchTot" />
+    <main class="pb-5">
+      <Contents :results="movies" title="Film" />
+      <Contents :results="series" title="Telefilm" />
     </main>
   </div>
 </template>
@@ -34,11 +35,6 @@ export default {
       key: "f7a805106989177ca0d6da798b3fd1eb",
       lang: "it-IT",
     };
-  },
-  computed: {
-    searchTot() {
-      return [...this.movies, ...this.series];
-    },
   },
   methods: {
     search(query) {
