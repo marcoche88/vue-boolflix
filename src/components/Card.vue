@@ -12,7 +12,7 @@
       src="../assets/img/poster-placeholder.png"
       alt="no poster"
     />
-    <CardBody :cardItem="cardItem" />
+    <CardBody :cardItem="cardItem" :genres="genres" />
   </div>
 </template>
 
@@ -31,6 +31,7 @@ export default {
   },
   props: {
     cardItem: Object,
+    genres: Array,
   },
 };
 </script>

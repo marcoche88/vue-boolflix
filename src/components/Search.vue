@@ -12,6 +12,12 @@
         Cerca
       </button>
     </div>
+    <select class="form-select m-auto w-25">
+      <option selected>Seleziona genere</option>
+      <option :value="genre.name" v-for="genre in genres" :key="genre.id">
+        {{ genre.name }}
+      </option>
+    </select>
   </div>
 </template>
 
@@ -25,6 +31,7 @@ export default {
   },
   props: {
     placeholder: String,
+    genres: Array,
   },
   methods: {
     search() {
@@ -38,8 +45,12 @@ export default {
 <style scoped lang="scss">
 @import "../scss/_vars.scss";
 
-input {
+input,
+select {
   background-color: $secondary-bg-color;
   border-color: $border-color;
+}
+select {
+  color: $primary-text-color;
 }
 </style>

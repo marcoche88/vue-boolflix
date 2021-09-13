@@ -7,7 +7,7 @@
         v-for="result in results"
         :key="result.id"
       >
-        <Card :cardItem="result" />
+        <Card :cardItem="result" :genres="genres" />
       </div>
     </div>
   </section>
@@ -24,6 +24,7 @@ export default {
   props: {
     results: Array,
     title: String,
+    genres: Array,
   },
 };
 </script>

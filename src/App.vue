@@ -7,12 +7,13 @@
       <Search
         @search="search"
         placeholder="Inserisci un titolo di un Film o una Serie TV"
+        :genres="genres"
         class="pb-3"
       />
     </header>
     <main class="pb-5">
-      <Contents :results="movies" title="Film" />
-      <Contents :results="series" title="Telefilm" />
+      <Contents :results="movies" :genres="genres" title="Film" />
+      <Contents :results="series" :genres="genres" title="Telefilm" />
     </main>
   </div>
 </template>
@@ -32,6 +33,7 @@ export default {
     return {
       movies: [],
       series: [],
+      genres: [],
       key: "f7a805106989177ca0d6da798b3fd1eb",
       lang: "it-IT",
     };
@@ -69,6 +71,22 @@ export default {
           console.log(err);
         });
     },
+  },
+  created() {
+    const params = {
+      params: {
+        api_key: this.key,
+        language: this.lang,
+      },
+    };
+    axios
+      .get("https://api.themoviedb.org/3//genre/movie/list", params)
+      .then((res) => {
+        this.genres = res.data.genres;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>

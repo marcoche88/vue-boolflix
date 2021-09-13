@@ -32,6 +32,7 @@
         ></i>
         <i v-for="num in 5 - newVote" :key="num" class="far fa-star"></i>
       </li>
+      <li><strong>Genere: </strong> {{ getGenre() }}</li>
     </ul>
   </div>
 </template>
@@ -46,6 +47,7 @@ export default {
   },
   props: {
     cardItem: Object,
+    genres: Array,
   },
   computed: {
     newVote() {
@@ -55,6 +57,19 @@ export default {
   methods: {
     flagImg(language) {
       return this.flags.includes(language);
+    },
+    getGenre() {
+      if (!this.cardItem.genre_ids.length) return "N.A.";
+      let genreList = [];
+      this.cardItem.genre_ids.forEach((genre_id) => {
+        this.genres.forEach((genre) => {
+          if (genre_id === genre.id) {
+            genreList.push(genre.name);
+          }
+        });
+      });
+
+      return genreList.join(", ");
     },
   },
 };
