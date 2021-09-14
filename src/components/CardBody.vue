@@ -26,11 +26,11 @@
       <li>
         <strong>Voto: </strong>
         <i
-          v-for="(num, index) in newVote"
-          :key="num + '-' + index"
-          class="fas fa-star text-red"
+          v-for="num in 5"
+          :key="num"
+          class="fas fa-star"
+          :class="num <= newVote ? 'text-red' : 'text-white'"
         ></i>
-        <i v-for="num in 5 - newVote" :key="num" class="far fa-star"></i>
       </li>
       <li><strong>Genere: </strong> {{ getGenre() }}</li>
     </ul>
@@ -59,7 +59,7 @@ export default {
       return this.flags.includes(language);
     },
     getGenre() {
-      if (!this.cardItem.genre_ids.length) return "N.A.";
+      if (!this.cardItem.genre_ids.length) return "...";
       let genreList = [];
       this.cardItem.genre_ids.forEach((genre_id) => {
         this.genres.forEach((genre) => {
@@ -68,7 +68,6 @@ export default {
           }
         });
       });
-
       return genreList.join(", ");
     },
   },

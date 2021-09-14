@@ -7,13 +7,13 @@
       <Search
         @search="search"
         placeholder="Inserisci un titolo di un Film o una Serie TV"
-        :genres="genres"
+        :genres="allGenres"
         class="pb-3"
       />
     </header>
     <main class="pb-5">
-      <Contents :results="movies" :genres="genres" title="Film" />
-      <Contents :results="series" :genres="genres" title="Telefilm" />
+      <Contents :results="movies" :genres="genresMovies" title="Film" />
+      <Contents :results="series" :genres="genresSeries" title="Telefilm" />
     </main>
   </div>
 </template>
@@ -33,10 +33,17 @@ export default {
     return {
       movies: [],
       series: [],
-      genres: [],
+      genresMovies: [],
+      genresSeries: [],
       key: "f7a805106989177ca0d6da798b3fd1eb",
       lang: "it-IT",
+      uriBase: "https://api.themoviedb.org/3",
     };
+  },
+  computed: {
+    allGenres() {
+      return [...this.genresMovies, ...this.genresSeries];
+    },
   },
   methods: {
     search(query) {
@@ -45,7 +52,10 @@ export default {
         this.series = [];
         return;
       }
-
+      this.getFetch("/search/movie", "movies", query);
+      this.getFetch("/search/tv", "series", query);
+    },
+    getFetch(endpoint, arr, query = "") {
       const params = {
         params: {
           api_key: this.key,
@@ -55,17 +65,14 @@ export default {
       };
 
       axios
-        .get("https://api.themoviedb.org/3/search/movie", params)
+        .get(`${this.uriBase}${endpoint}`, params)
         .then((res) => {
-          this.movies = res.data.results;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      axios
-        .get("https://api.themoviedb.org/3/search/tv", params)
-        .then((res) => {
-          this.series = res.data.results;
+          console.log(res.data);
+          if (endpoint.includes("genre")) {
+            this[arr] = res.data.genres;
+          } else {
+            this[arr] = res.data.results;
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -73,20 +80,8 @@ export default {
     },
   },
   created() {
-    const params = {
-      params: {
-        api_key: this.key,
-        language: this.lang,
-      },
-    };
-    axios
-      .get("https://api.themoviedb.org/3//genre/movie/list", params)
-      .then((res) => {
-        this.genres = res.data.genres;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.getFetch("/genre/movie/list", "genresMovies");
+    this.getFetch("/genre/tv/list", "genresSeries");
   },
 };
 </script>

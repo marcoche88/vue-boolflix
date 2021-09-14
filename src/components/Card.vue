@@ -2,15 +2,8 @@
   <div class="card position-relative mx-3 h-100">
     <img
       class="poster card-img-top position-absolute h-100"
-      v-if="cardItem.poster_path"
-      :src="uriPoster + cardItem.poster_path"
+      :src="imgPath"
       :alt="cardItem.title || cardItem.name"
-    />
-    <img
-      class="poster card-img-top position-absolute h-100"
-      v-else
-      src="../assets/img/poster-placeholder.png"
-      alt="no poster"
     />
     <CardBody :cardItem="cardItem" :genres="genres" />
   </div>
@@ -26,12 +19,20 @@ export default {
   },
   data() {
     return {
-      uriPoster: "https://image.tmdb.org/t/p/w342",
+      urlPoster: "https://image.tmdb.org/t/p/w342",
     };
   },
   props: {
     cardItem: Object,
     genres: Array,
+  },
+  computed: {
+    imgPath() {
+      if (this.cardItem.poster_path) {
+        return this.urlPoster + this.cardItem.poster_path;
+      }
+      return require("../assets/img/poster-placeholder.png");
+    },
   },
 };
 </script>
