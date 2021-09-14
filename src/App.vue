@@ -7,7 +7,7 @@
       <Search
         @search="search"
         placeholder="Inserisci un titolo di un Film o una Serie TV"
-        :genres="allGenres"
+        :genres="genresMovies"
         class="pb-3"
       />
     </header>
@@ -40,11 +40,6 @@ export default {
       uriBase: "https://api.themoviedb.org/3",
     };
   },
-  computed: {
-    allGenres() {
-      return [...this.genresMovies, ...this.genresSeries];
-    },
-  },
   methods: {
     search(query) {
       if (!query) {
@@ -67,7 +62,6 @@ export default {
       axios
         .get(`${this.uriBase}${endpoint}`, params)
         .then((res) => {
-          console.log(res.data);
           if (endpoint.includes("genre")) {
             this[arr] = res.data.genres;
           } else {

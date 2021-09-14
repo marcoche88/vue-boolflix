@@ -32,17 +32,21 @@
           :class="num <= newVote ? 'text-red' : 'text-white'"
         ></i>
       </li>
-      <li><strong>Genere: </strong> {{ getGenre() }}</li>
+      <li><strong>Genere: </strong> {{ genreList }}</li>
+      <li><strong>Cast: </strong> {{ getCastList() }} {{ castList }}</li>
     </ul>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "CardBody",
   data() {
     return {
       flags: ["it", "en"],
+      castList: "",
     };
   },
   props: {
@@ -53,12 +57,7 @@ export default {
     newVote() {
       return Math.ceil(this.cardItem.vote_average / 2);
     },
-  },
-  methods: {
-    flagImg(language) {
-      return this.flags.includes(language);
-    },
-    getGenre() {
+    genreList() {
       if (!this.cardItem.genre_ids.length) return "...";
       let genreList = [];
       this.cardItem.genre_ids.forEach((genre_id) => {
@@ -69,6 +68,30 @@ export default {
         });
       });
       return genreList.join(", ");
+    },
+  },
+  methods: {
+    flagImg(language) {
+      return this.flags.includes(language);
+    },
+    getCastList() {
+      const type = this.cardItem.title ? "movie" : "tv";
+
+      axios
+        .get(
+          `https://api.themoviedb.org/3/${type}/${this.cardItem.id}/credits?api_key=f7a805106989177ca0d6da798b3fd1eb`
+        )
+        .then((res) => {
+          const castList = res.data.cast;
+          const castListName = [];
+          for (let i = 0; i < 5; i++) {
+            castListName.push(castList[i].name);
+          }
+          this.castList = castListName.join(", ");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
