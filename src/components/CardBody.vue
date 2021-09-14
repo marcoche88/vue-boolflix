@@ -45,6 +45,7 @@ export default {
   name: "CardBody",
   data() {
     return {
+      key: "f7a805106989177ca0d6da798b3fd1eb",
       flags: ["it", "en"],
       castList: "",
     };
@@ -79,7 +80,7 @@ export default {
 
       axios
         .get(
-          `https://api.themoviedb.org/3/${type}/${this.cardItem.id}/credits?api_key=f7a805106989177ca0d6da798b3fd1eb`
+          `https://api.themoviedb.org/3/${type}/${this.cardItem.id}/credits?api_key=${this.key}`
         )
         .then((res) => {
           const castList = res.data.cast;

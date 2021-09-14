@@ -12,9 +12,13 @@
         Cerca
       </button>
     </div>
-    <select class="form-select m-auto w-25">
-      <option selected>Seleziona genere</option>
-      <option :value="genre.name" v-for="genre in genres" :key="genre.id">
+    <select
+      v-model="genreInput"
+      @change="filterGenre"
+      class="form-select m-auto w-25"
+    >
+      <option value="all" selected>Tutti i generi</option>
+      <option :value="genre.id" v-for="genre in genres" :key="genre.id">
         {{ genre.name }}
       </option>
     </select>
@@ -27,6 +31,7 @@ export default {
   data() {
     return {
       searchText: "",
+      genreInput: "all",
     };
   },
   props: {
@@ -37,6 +42,9 @@ export default {
     search() {
       this.$emit("search", this.searchText);
       this.searchText = "";
+    },
+    filterGenre() {
+      this.$emit("filterGenre", this.genreInput);
     },
   },
 };

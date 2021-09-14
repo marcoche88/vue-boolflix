@@ -6,14 +6,19 @@
       </div>
       <Search
         @search="search"
+        @filterGenre="filterGenre"
         placeholder="Inserisci un titolo di un Film o una Serie TV"
-        :genres="genresMovies"
+        :genres="allGenres"
         class="pb-3"
       />
     </header>
     <main class="pb-5">
-      <Contents :results="movies" :genres="genresMovies" title="Film" />
-      <Contents :results="series" :genres="genresSeries" title="Telefilm" />
+      <Contents :results="moviesFiltered" :genres="genresMovies" title="Film" />
+      <Contents
+        :results="seriesFiltered"
+        :genres="genresSeries"
+        title="Serie TV"
+      />
     </main>
   </div>
 </template>
@@ -35,10 +40,37 @@ export default {
       series: [],
       genresMovies: [],
       genresSeries: [],
+      genreInput: "all",
       key: "f7a805106989177ca0d6da798b3fd1eb",
       lang: "it-IT",
       uriBase: "https://api.themoviedb.org/3",
     };
+  },
+  computed: {
+    allGenres() {
+      const arrGenres = [];
+      this.genresSeries.forEach((genreTV) => {
+        let isInclude = this.genresMovies.some((genreMovie) => {
+          return genreMovie.id === genreTV.id;
+        });
+        if (!isInclude) arrGenres.push(genreTV);
+      });
+      return [...this.genresMovies, ...arrGenres];
+    },
+    moviesFiltered() {
+      if (this.genreInput === "all") return this.movies;
+      return this.movies.filter((movie) => {
+        if (movie.genre_ids.includes(this.genreInput)) return true;
+        return false;
+      });
+    },
+    seriesFiltered() {
+      if (this.genreInput === "all") return this.series;
+      return this.series.filter((serie) => {
+        if (serie.genre_ids.includes(this.genreInput)) return true;
+        return false;
+      });
+    },
   },
   methods: {
     search(query) {
@@ -49,6 +81,9 @@ export default {
       }
       this.getFetch("/search/movie", "movies", query);
       this.getFetch("/search/tv", "series", query);
+    },
+    filterGenre(value) {
+      this.genreInput = value;
     },
     getFetch(endpoint, arr, query = "") {
       const params = {
